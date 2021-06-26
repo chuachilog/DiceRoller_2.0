@@ -3,10 +3,14 @@ package com.example.diceroller
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.ImageView
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var diceImage : ImageView
+    lateinit var diceImage1 : ImageView
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -14,27 +18,38 @@ class MainActivity : AppCompatActivity() {
         val rollButton: Button = findViewById(R.id.roll_button)
         rollButton.setOnClickListener{ rollDice() }
 
-        val countButton: Button = findViewById(R.id.count_button)
-        countButton.setOnClickListener{ countUp() }
+        val clearButton: Button = findViewById(R.id.clear_button)
+        clearButton.setOnClickListener{ clear() }
+
+        diceImage = findViewById(R.id.dice_image)
+        diceImage1 = findViewById(R.id.dice_image1)
+
     }
 
     private fun rollDice() {
-        val randomInt = (1..6).random()
-//        Toast.makeText(this, "button clicked",
-//            Toast.LENGTH_SHORT).show()
-        val resultText: TextView = findViewById(R.id.result_text)
-//        resultText.text = "Dice Rolled!"
-        resultText.text = randomInt.toString()
+
+        val drawableResource = getRandomDiceImage()
+        val drawableResource1 = getRandomDiceImage()
+
+        diceImage.setImageResource(drawableResource)
+        diceImage1.setImageResource(drawableResource1)
     }
 
-    private fun countUp() {
-        val resultText: TextView = findViewById(R.id.result_text)
+    private fun clear() {
+        diceImage.setImageResource(R.drawable.empty_dice)
+        diceImage1.setImageResource(R.drawable.empty_dice)
+    }
 
-        if(resultText.text.toString() == "Hello World!") {
-            resultText.text = "1"
-        }else if (resultText.text.toString() != "6") {
-            val num  = resultText.text.toString().toInt() + 1
-            resultText.text = num.toString()
+    private fun getRandomDiceImage(): Int {
+
+        return when ((1..6).random()) {
+            1 -> R.drawable.dice_1
+            2 -> R.drawable.dice_2
+            3 -> R.drawable.dice_3
+            4 -> R.drawable.dice_4
+            5 -> R.drawable.dice_5
+            else -> R.drawable.dice_6
         }
     }
+
 }
